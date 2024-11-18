@@ -39,18 +39,12 @@ db.mongoose.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`
 });
 
 app.get("/", (req,res)=>{
-    res.json({message:"Bienbenidos a HaiMusic API"})
+    res.json({message:"ApiProyectoIntegrador"})
 })
 
 
 require('./src/routers/auth.routes')(app);
 require('./src/routers/user.routes')(app);
-require('./src/routers/song.routes')(app);
-require('./src/routers/artist.routes')(app);
-require('./src/routers/disk.routes')(app);
-require('./src/routers/lenguage.routes')(app);
-require('./src/routers/favList.routes')(app);
-require('./src/routers/likedList.routes')(app);
 
 const PORT = process.env.PORT || 3030;
 app.listen(PORT, () => {
@@ -74,27 +68,5 @@ async function initial() {
   }
 
   const upload = multer({ dest: 'uploads/' });
-
-// Endpoint para subir archivos mp3
-app.post('/api/V3/upload', upload.single('mp3file'), (req, res) => {
-
-  res.send('Archivo mp3 subido correctamente.');
-});
-
-// Endpoint para descargar archivos mp3
-app.get('/download/:filename', (req, res) => {
-  const filename = req.params.filename;
-  const filePath = path.join(__dirname, 'uploads', filename);
-
-  // Verificar si el archivo existe
-  if (fs.existsSync(filePath)) {
-    // Configurar el encabezado Content-Type para archivos mp3
-    res.setHeader('Content-Type', 'audio/mpeg');
-    // Proporcionar el archivo como una respuesta HTTP
-    fs.createReadStream(filePath).pipe(res);
-  } else {
-    res.status(404).send('Archivo no encontrado.');
-  }
-});
 
 
